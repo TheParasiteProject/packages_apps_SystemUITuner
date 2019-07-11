@@ -15,4 +15,8 @@
     <string name="settings_entry_title">@string/system_ui_tuner</string>
     <string name="settings_search_keywords">system ui tuner, tuner, status bar, icons</string>
 
+    <!-- Data disabled icon -->
+    <string name="data_disabled_icon_title">Mobile data disabled indicator</string>
+    <string name="data_disabled_icon_summary">Display an indicator next to signal icon when data is disabled</string>
+
 </resources>

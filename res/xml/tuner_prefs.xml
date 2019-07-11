@@ -128,6 +128,15 @@
             android:title="@string/tuner_low_priority"
             android:defaultValue="false" />
 
+        <!-- system -->
+
+        <com.android.systemui.tuner.preference.SystemSettingSwitchPreference
+            android:icon="@drawable/ic_statusbar_mobile_network_alert"
+            android:key="data_disabled_icon"
+            android:title="@string/data_disabled_icon_title"
+            android:summary="@string/data_disabled_icon_summary"
+            android:defaultValue="true"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>
