@@ -27,4 +27,7 @@
     <string name="carrier_on_lockscreen_title">Carrier name on lockscreen</string>
     <string name="carrier_on_lockscreen_summary">Display carrier name on lockscreen status bar</string>
 
+    <!-- Statusbar Icons -->
+    <string name="status_bar_call_strength">Call strength</string>
+
 </resources>
