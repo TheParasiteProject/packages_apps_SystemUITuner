@@ -144,6 +144,13 @@
             android:summary="@string/show_fourg_icon_summary"
             android:defaultValue="false" />
 
+        <com.android.systemui.tuner.preference.SystemSettingSwitchPreference
+            android:icon="@drawable/ic_statusbar_sim_outline"
+            android:key="carrier_on_lockscreen"
+            android:title="@string/carrier_on_lockscreen_title"
+            android:summary="@string/carrier_on_lockscreen_summary"
+            android:defaultValue="true"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

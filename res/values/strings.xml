@@ -23,4 +23,8 @@
     <string name="show_fourg_icon_title">4G icon</string>
     <string name="show_fourg_icon_summary">Display 4G icon in signal icon instead LTE</string>
 
+    <!-- Carrier name on lockscreen status bar  -->
+    <string name="carrier_on_lockscreen_title">Carrier name on lockscreen</string>
+    <string name="carrier_on_lockscreen_summary">Display carrier name on lockscreen status bar</string>
+
 </resources>
