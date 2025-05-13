@@ -18,6 +18,7 @@ const val PACKAGE_SYSTEMUI = "com.android.systemui"
 
 const val ICON_HIDE_LIST = "icon_blacklist"
 const val CLOCK_SECONDS = "clock_seconds"
+const val LOW_PRIORITY = "low_priority"
 
 fun Context.getDePrefs(): SharedPreferences {
     return createDeviceProtectedStorageContext()
