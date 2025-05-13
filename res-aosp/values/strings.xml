@@ -12,6 +12,10 @@
     <!-- Name of status bar -->
     <string name="status_bar">Status bar</string>
 
+    <string name="volume_ringer_status_normal">Ring</string>
+    <string name="volume_ringer_status_vibrate">Vibrate</string>
+    <string name="volume_ringer_status_silent">Mute</string>
+
     <!-- Label in system panel saying the device will use the orientation sensor to rotate [CHAR LIMIT=30] -->
     <string name="status_bar_settings_auto_rotation">Auto-rotate screen</string>
 
