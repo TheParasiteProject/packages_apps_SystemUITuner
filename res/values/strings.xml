@@ -7,4 +7,9 @@
     <string name="app_label">System UI Tuner Service</string>
 
     <string name="system_ui_tuner">System UI Tuner</string>
+
+    <!-- Entry points in Settings -->
+    <string name="settings_entry_title">@string/system_ui_tuner</string>
+    <string name="settings_search_keywords">system ui tuner, tuner, status bar, icons</string>
+
 </resources>

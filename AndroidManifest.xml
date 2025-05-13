@@ -30,5 +30,17 @@
             </intent-filter>
         </receiver>
 
+        <provider
+            android:name=".settings.SearchProvider"
+            android:authorities="com.android.systemui.tuner.settings.search"
+            android:multiprocess="false"
+            android:grantUriPermissions="true"
+            android:permission="android.permission.READ_SEARCH_INDEXABLES"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.content.action.SEARCH_INDEXABLES_PROVIDER" />
+            </intent-filter>
+        </provider>
+
     </application>
 </manifest>
