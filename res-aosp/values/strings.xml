@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: The Android Open Source Project
+  SPDX-FileCopyrightText: TheParasiteProject
+  SPDX-License-Identifier: Apache-2.0
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- Name of special SystemUI debug settings -->
+    <string name="system_ui_tuner">System UI Tuner</string>
+
+    <!-- Name of status bar -->
+    <string name="status_bar">Status bar</string>
+
+    <!-- Label in system panel saying the device will use the orientation sensor to rotate [CHAR LIMIT=30] -->
+    <string name="status_bar_settings_auto_rotation">Auto-rotate screen</string>
+
+    <!-- Name of the headset in status bar [CHAR LIMIT=30] -->
+    <string name="headset">Headset</string>
+
+    <!-- Name of the work status bar icon. -->
+    <string name="status_bar_work">Work profile</string>
+
+    <!-- Name of the airplane status bar icon. -->
+    <string name="status_bar_airplane">Airplane mode</string>
+
+    <!-- QuickSettings: Cast title [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_cast_title">Cast</string>
+
+    <!-- QuickSettings: Hotspot. [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_hotspot_label">Hotspot</string>
+
+    <!-- QuickSettings: Bluetooth [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_bluetooth_label">Bluetooth</string>
+
+    <!-- QuickSettings: Camera [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_camera_label">Camera access</string>
+    <!-- QuickSettings: Microphone [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_mic_label">Mic access</string>
+
+    <!-- QuickSettings: Do not disturb [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_dnd_label">Do Not Disturb</string>
+
+    <!-- QuickSettings: Wifi [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_wifi_label">Wi-Fi</string>
+
+    <!-- Name of the ethernet status bar icon. -->
+    <string name="status_bar_ethernet">Ethernet</string>
+
+    <!-- QuickSettings: Cellular detail panel title [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_cellular_detail_title">Mobile data</string>
+
+    <!-- Name of the alarm status bar icon. -->
+    <string name="status_bar_alarm">Alarm</string>
+
+    <!-- SysUI Tuner: Switch for showing low-priority notification icons in status bar [CHAR LIMIT=NONE] -->
+    <string name="tuner_low_priority">Show low-priority notification icons</string>
+
+    <!-- SysUI Tuner: Options for how clock is displayed [CHAR LIMIT=NONE] -->
+    <string-array name="clock_options">
+        <item>Show hours, minutes, and seconds</item>
+        <item>Show hours and minutes (default)</item>
+        <item>Don\'t show this icon</item>
+    </string-array>
+
+    <!-- SysUI Tuner: Options for how battery is displayed [CHAR LIMIT=NONE] -->
+    <string-array name="battery_options">
+        <item>Always show percentage</item>
+        <item>Show percentage when charging (default)</item>
+        <item>Don\'t show this icon</item>
+    </string-array>
+
+</resources>

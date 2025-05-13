@@ -12,6 +12,7 @@ import android.database.MatrixCursor
 import android.provider.SearchIndexablesContract.*
 import android.provider.SearchIndexablesProvider
 import com.android.systemui.tuner.R
+import com.android.systemui.tuner.TunerActivity
 
 class SearchProvider : SearchIndexablesProvider() {
     override fun onCreate() = true
@@ -32,11 +33,11 @@ class SearchProvider : SearchIndexablesProvider() {
         // For breadcrumb generation
         ref[COLUMN_INDEX_RAW_SCREEN_TITLE] =
             requireContext().getString(R.string.settings_entry_title)
-        ref[COLUMN_INDEX_RAW_CLASS_NAME] = SettingsActivity::class.java.name
+        ref[COLUMN_INDEX_RAW_CLASS_NAME] = TunerActivity::class.java.name
 
         ref[COLUMN_INDEX_RAW_INTENT_ACTION] = Intent.ACTION_MAIN
         ref[COLUMN_INDEX_RAW_INTENT_TARGET_PACKAGE] = requireContext().applicationInfo.packageName
-        ref[COLUMN_INDEX_RAW_INTENT_TARGET_CLASS] = SettingsActivity::class.java.name
+        ref[COLUMN_INDEX_RAW_INTENT_TARGET_CLASS] = TunerActivity::class.java.name
 
         return MatrixCursor(INDEXABLES_RAW_COLUMNS).apply { addRow(ref) }
     }

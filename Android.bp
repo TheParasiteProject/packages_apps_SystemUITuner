@@ -18,6 +18,11 @@ android_app {
         "src/**/*.kt",
     ],
 
+    res: [
+        "res",
+        "res-aosp",
+    ],
+
     certificate: "platform",
 
     platform_apis: true,
