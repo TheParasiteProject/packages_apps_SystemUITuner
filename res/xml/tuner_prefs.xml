@@ -105,6 +105,7 @@
 
         <com.android.systemui.tuner.BatteryPreference
             android:icon="@*android:drawable/ic_battery"
+            android:key="battery"
             android:title="@string/battery"
             android:summary="%s"
             android:entries="@array/battery_options" />
@@ -118,6 +119,7 @@
 
         <com.android.systemui.tuner.ClockPreference
             android:icon="@drawable/ic_statusbar_clock"
+            android:key="clock"
             android:title="@string/tuner_time"
             android:summary="%s"
             android:entries="@array/clock_options" />
