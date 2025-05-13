@@ -60,6 +60,9 @@
     <!-- Name for a generic legacy VPN connection [CHAR LIMIT=20] -->
     <string name="legacy_vpn_name">VPN</string>
 
+    <!-- Label for quick settings tile for data saver [CHAR LIMIT=30] -->
+    <string name="data_saver">Data Saver</string>
+
     <!-- SysUI Tuner: Switch for showing low-priority notification icons in status bar [CHAR LIMIT=NONE] -->
     <string name="tuner_low_priority">Show low-priority notification icons</string>
 
