@@ -1,0 +1,55 @@
+//
+// SPDX-FileCopyrightText: TheParasiteProject
+// SPDX-License-Identifier: Apache-2.0
+//
+
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+android_app {
+    name: "SystemUITuner",
+    defaults: [
+        "SettingsLibDefaults",
+    ],
+
+    srcs: [
+        "src/**/*.java",
+        "src/**/*.kt",
+    ],
+
+    certificate: "platform",
+
+    platform_apis: true,
+    static_libs: [
+        "androidx.core_core",
+        "androidx.core_core-ktx",
+        "androidx.preference_preference",
+        "kotlin-reflect",
+        "kotlin-stdlib",
+        "kotlin-stdlib-jdk7",
+        "SettingsLib",
+    ],
+
+    required: [
+        "privapp_whitelist_com.android.systemui.tuner",
+    ],
+
+    optimize: {
+        enabled: true,
+        shrink: true,
+        optimize: true,
+        proguard_flags_files: ["proguard.flags"],
+    },
+
+    system_ext_specific: true,
+    privileged: true,
+}
+
+prebuilt_etc {
+    name: "privapp_whitelist_com.android.systemui.tuner",
+    relative_install_path: "permissions",
+    src: "privapp_whitelist_com.android.systemui.tuner.xml",
+    filename_from_src: true,
+    system_ext_specific: true,
+}
