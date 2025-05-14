@@ -39,7 +39,7 @@ class BatteryPreference : SelfRemovingListPreference {
                 getContext().getContentResolver(),
                 ICON_HIDE_LIST,
                 UserHandle.USER_CURRENT,
-            ) ?: ""
+            ) ?: context.getString(R.string.config_default_icon_hide_list)
         mHideList = context.getIconHideList(blacklist)
         setEntryValues(arrayOf<CharSequence>(PERCENT, DEFAULT, DISABLED))
         mBattery = context.getString(com.android.internal.R.string.status_bar_battery)
