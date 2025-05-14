@@ -5,9 +5,14 @@
 
 package com.android.systemui.tuner
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import androidx.core.view.MenuProvider
 import androidx.preference.PreferenceFragmentCompat
 
 class TunerFragment :
@@ -15,6 +20,64 @@ class TunerFragment :
 
     private lateinit var prefs: SharedPreferences
     private lateinit var mContext: Context
+    private lateinit var mMenuProvider: TunerMenuProvider
+
+    private val MENU_RESET = 1
+
+    private inner class TunerMenuProvider : MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menu.add(Menu.NONE, MENU_RESET, Menu.NONE, R.string.menu_restore)
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            if (menuItem.itemId == MENU_RESET) {
+                AlertDialog.Builder(mContext)
+                    .setTitle(mContext.getString(R.string.reset_tuner_settings_confirm_title))
+                    .setMessage(mContext.getString(R.string.reset_tuner_settings_desc))
+                    .setPositiveButton(R.string.reset, { dialog, which -> reset() })
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+                return true
+            }
+            return false
+        }
+    }
+
+    private fun reset() {
+        mContext.getDePrefs().edit().clear().apply()
+
+        mContext.setList(mContext.getString(R.string.config_default_icon_hide_list))
+
+        mContext.setBooleanSecure(
+            mContext.getString(R.string.key_clock_seconds),
+            mContext.resources.getInteger(R.integer.config_default_clock_seconds) != 0,
+        )
+
+        mContext.setBooleanSystem(
+            mContext.getString(R.string.key_show_battery_percent),
+            mContext.resources.getInteger(R.integer.config_default_show_battery_percent) != 0,
+        )
+
+        mContext.setBooleanSecure(
+            mContext.getString(R.string.key_low_priority),
+            mContext.resources.getBoolean(R.bool.config_default_low_priority),
+        )
+
+        mContext.setBooleanSystem(
+            mContext.getString(R.string.key_data_disabled_icon),
+            mContext.resources.getBoolean(R.bool.config_default_data_disabled_icon),
+        )
+
+        mContext.setBooleanSystem(
+            mContext.getString(R.string.key_show_fourg_icon),
+            mContext.resources.getBoolean(R.bool.config_default_show_fourg_icon),
+        )
+
+        mContext.setBooleanSystem(
+            mContext.getString(R.string.key_carrier_on_lockscreen),
+            mContext.resources.getBoolean(R.bool.config_default_carrier_on_lockscreen),
+        )
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.tuner_prefs, rootKey)
@@ -28,10 +91,15 @@ class TunerFragment :
         mContext = requireContext()
         prefs = mContext.getDePrefs()
         prefs.registerOnSharedPreferenceChangeListener(this)
+
+        mMenuProvider = TunerMenuProvider()
+        activity.addMenuProvider(mMenuProvider)
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        activity.removeMenuProvider(mMenuProvider)
+
         prefs.unregisterOnSharedPreferenceChangeListener(this)
     }
 
