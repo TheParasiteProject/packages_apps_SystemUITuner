@@ -6,6 +6,9 @@
 package com.android.systemui.tuner
 
 import android.content.Context
+import android.database.ContentObserver
+import android.os.Handler
+import android.os.Looper
 import android.os.UserHandle
 import android.provider.Settings
 import android.text.TextUtils
@@ -17,9 +20,18 @@ class ClockPreference : SelfRemovingListPreference {
 
     private var mClockEnabled = false
     private var mHasSeconds = false
-    private val mHideList: ArraySet<String>
+    private lateinit var mHideList: ArraySet<String>
     private var mHasSetValue = false
     private val mClock: String
+    private val settingsObserver: SettingsObserver
+
+    private class SettingsObserver(handler: Handler, val onChangeCallback: () -> Unit) :
+        ContentObserver(handler) {
+        override fun onChange(selfChange: Boolean) {
+            super.onChange(selfChange)
+            onChangeCallback.invoke()
+        }
+    }
 
     constructor(
         context: Context,
@@ -32,6 +44,14 @@ class ClockPreference : SelfRemovingListPreference {
     constructor(context: Context) : super(context, null)
 
     init {
+        mClock = context.getString(com.android.internal.R.string.status_bar_clock)
+        setEntryValues(arrayOf<CharSequence>(SECONDS, DEFAULT, DISABLED))
+        refreshPreference()
+
+        settingsObserver = SettingsObserver(Handler(Looper.getMainLooper())) { refreshPreference() }
+    }
+
+    private fun updateBlackList() {
         val blacklist =
             Settings.Secure.getStringForUser(
                 getContext().getContentResolver(),
@@ -39,8 +59,10 @@ class ClockPreference : SelfRemovingListPreference {
                 UserHandle.USER_CURRENT,
             ) ?: context.getString(R.string.config_default_icon_hide_list)
         mHideList = context.getIconHideList(blacklist)
-        setEntryValues(arrayOf<CharSequence>(SECONDS, DEFAULT, DISABLED))
-        mClock = context.getString(com.android.internal.R.string.status_bar_clock)
+        mClockEnabled = !mHideList.contains(mClock)
+    }
+
+    private fun updateHasSeconds() {
         mHasSeconds =
             Settings.Secure.getIntForUser(
                 getContext().getContentResolver(),
@@ -48,7 +70,31 @@ class ClockPreference : SelfRemovingListPreference {
                 context.resources.getInteger(R.integer.config_default_clock_seconds),
                 UserHandle.USER_CURRENT,
             ) != 0
-        mClockEnabled = !mHideList.contains(mClock)
+    }
+
+    private fun refreshPreference() {
+        updateBlackList()
+        updateHasSeconds()
+        setValue(getStringInternal())
+    }
+
+    override open fun onAttached() {
+        super.onAttached()
+        context.contentResolver.registerContentObserver(
+            Settings.Secure.getUriFor(ICON_HIDE_LIST),
+            false,
+            settingsObserver,
+        )
+        context.contentResolver.registerContentObserver(
+            Settings.Secure.getUriFor(CLOCK_SECONDS),
+            false,
+            settingsObserver,
+        )
+    }
+
+    override open fun onDetached() {
+        super.onDetached()
+        context.contentResolver.unregisterContentObserver(settingsObserver)
     }
 
     override open fun isPersisted(): Boolean = true
@@ -106,12 +152,16 @@ class ClockPreference : SelfRemovingListPreference {
         }
     }
 
-    override open fun getString(key: String, defaultValue: String?): String {
+    private fun getStringInternal(): String {
         return when {
             mClockEnabled && mHasSeconds -> SECONDS
             mClockEnabled -> DEFAULT
             else -> DISABLED
         }
+    }
+
+    override open fun getString(key: String, defaultValue: String?): String {
+        return getStringInternal()
     }
 
     private fun setList(hideList: ArraySet<String>) {

@@ -6,6 +6,9 @@
 package com.android.systemui.tuner
 
 import android.content.Context
+import android.database.ContentObserver
+import android.os.Handler
+import android.os.Looper
 import android.os.UserHandle
 import android.provider.Settings
 import android.provider.Settings.System.SHOW_BATTERY_PERCENT
@@ -21,7 +24,16 @@ class BatteryPreference : SelfRemovingListPreference {
     private val mBattery: String
     private var mBatteryEnabled = false
     private var mHasPercentage = false
-    private val mHideList: ArraySet<String>
+    private lateinit var mHideList: ArraySet<String>
+    private val settingsObserver: SettingsObserver
+
+    private class SettingsObserver(handler: Handler, val onChangeCallback: () -> Unit) :
+        ContentObserver(handler) {
+        override fun onChange(selfChange: Boolean) {
+            super.onChange(selfChange)
+            onChangeCallback.invoke()
+        }
+    }
 
     constructor(
         context: Context,
@@ -34,6 +46,14 @@ class BatteryPreference : SelfRemovingListPreference {
     constructor(context: Context) : super(context, null)
 
     init {
+        mBattery = context.getString(com.android.internal.R.string.status_bar_battery)
+        setEntryValues(arrayOf<CharSequence>(PERCENT, DEFAULT, DISABLED))
+        refreshPreference()
+
+        settingsObserver = SettingsObserver(Handler(Looper.getMainLooper())) { refreshPreference() }
+    }
+
+    private fun updateBlackList() {
         val blacklist =
             Settings.Secure.getStringForUser(
                 getContext().getContentResolver(),
@@ -41,8 +61,10 @@ class BatteryPreference : SelfRemovingListPreference {
                 UserHandle.USER_CURRENT,
             ) ?: context.getString(R.string.config_default_icon_hide_list)
         mHideList = context.getIconHideList(blacklist)
-        setEntryValues(arrayOf<CharSequence>(PERCENT, DEFAULT, DISABLED))
-        mBattery = context.getString(com.android.internal.R.string.status_bar_battery)
+        mBatteryEnabled = !mHideList.contains(mBattery)
+    }
+
+    private fun updateHasPercentage() {
         mHasPercentage =
             Settings.System.getIntForUser(
                 getContext().getContentResolver(),
@@ -50,6 +72,31 @@ class BatteryPreference : SelfRemovingListPreference {
                 0,
                 UserHandle.USER_CURRENT,
             ) != 0
+    }
+
+    private fun refreshPreference() {
+        updateBlackList()
+        updateHasPercentage()
+        setValue(getStringInternal())
+    }
+
+    override open fun onAttached() {
+        super.onAttached()
+        context.contentResolver.registerContentObserver(
+            Settings.Secure.getUriFor(ICON_HIDE_LIST),
+            false,
+            settingsObserver,
+        )
+        context.contentResolver.registerContentObserver(
+            Settings.System.getUriFor(SHOW_BATTERY_PERCENT),
+            false,
+            settingsObserver,
+        )
+    }
+
+    override open fun onDetached() {
+        super.onDetached()
+        context.contentResolver.unregisterContentObserver(settingsObserver)
     }
 
     override open fun isPersisted(): Boolean = true
@@ -110,12 +157,16 @@ class BatteryPreference : SelfRemovingListPreference {
         }
     }
 
-    override open fun getString(key: String, defaultValue: String?): String {
+    private fun getStringInternal(): String {
         return when {
             mBatteryEnabled && mHasPercentage -> PERCENT
             mBatteryEnabled -> DEFAULT
             else -> DISABLED
         }
+    }
+
+    override open fun getString(key: String, defaultValue: String?): String {
+        return getStringInternal()
     }
 
     private fun setList(hideList: ArraySet<String>) {
