@@ -13,7 +13,7 @@ import android.os.UserHandle
 import android.provider.Settings
 import android.util.AttributeSet
 
-class SystemSettingSwitchPreference : SelfRemovingSwitchPreference {
+open class SystemSettingSwitchPreference : SelfRemovingSwitchPreference {
 
     private var mEnabled = false
 
@@ -64,14 +64,14 @@ class SystemSettingSwitchPreference : SelfRemovingSwitchPreference {
         context.contentResolver.unregisterContentObserver(settingsObserver)
     }
 
-    protected override fun isPersisted(): Boolean =
+    protected override open fun isPersisted(): Boolean =
         Settings.System.getStringForUser(
             getContext().getContentResolver(),
             getKey(),
             UserHandle.USER_CURRENT,
         ) != null
 
-    protected override fun putBoolean(key: String, value: Boolean) {
+    protected override open fun putBoolean(key: String, value: Boolean) {
         Settings.System.putIntForUser(
             getContext().getContentResolver(),
             key,
@@ -80,7 +80,7 @@ class SystemSettingSwitchPreference : SelfRemovingSwitchPreference {
         )
     }
 
-    protected override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+    protected override open fun getBoolean(key: String, defaultValue: Boolean): Boolean {
         return Settings.System.getIntForUser(
             getContext().getContentResolver(),
             key,
