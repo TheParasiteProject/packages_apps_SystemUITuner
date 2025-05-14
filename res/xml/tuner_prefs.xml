@@ -113,7 +113,8 @@
             android:key="battery"
             android:title="@string/battery"
             android:summary="%s"
-            android:entries="@array/battery_options" />
+            android:entries="@array/battery_options"
+            android:defaultValue="@integer/config_default_battery_style" />
 
         <com.android.systemui.tuner.StatusBarSwitch
             android:icon="@drawable/ic_statusbar_alarm"
@@ -127,13 +128,14 @@
             android:key="clock"
             android:title="@string/tuner_time"
             android:summary="%s"
-            android:entries="@array/clock_options" />
+            android:entries="@array/clock_options"
+            android:defaultValue="@integer/config_default_clock_style" />
 
         <com.android.systemui.tuner.TunerSwitch
             android:icon="@drawable/ic_statusbar_priority"
             android:key="low_priority"
             android:title="@string/tuner_low_priority"
-            android:defaultValue="false" />
+            android:defaultValue="@bool/config_default_low_priority" />
 
         <!-- system -->
 

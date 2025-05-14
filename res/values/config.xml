@@ -5,4 +5,9 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <bool name="config_default_enabled" translatable="false">false</bool>
+    <string name="config_default_icon_hide_list" translatable="false">rotate,headset</string>
+    <integer name="config_default_clock_seconds" translatable="false">0</integer>
+    <integer name="config_default_clock_style" translatable="false">1</integer>
+    <integer name="config_default_battery_style" translatable="false">1</integer>
+    <bool name="config_default_low_priority" translatable="false">false</bool>
 </resources>

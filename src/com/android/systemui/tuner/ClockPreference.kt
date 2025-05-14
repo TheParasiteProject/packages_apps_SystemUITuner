@@ -37,7 +37,7 @@ class ClockPreference : SelfRemovingListPreference {
                 getContext().getContentResolver(),
                 ICON_HIDE_LIST,
                 UserHandle.USER_CURRENT,
-            ) ?: ""
+            ) ?: context.getString(R.string.config_default_icon_hide_list)
         mHideList = context.getIconHideList(blacklist)
         setEntryValues(arrayOf<CharSequence>(SECONDS, DEFAULT, DISABLED))
         mClock = context.getString(com.android.internal.R.string.status_bar_clock)
@@ -45,7 +45,7 @@ class ClockPreference : SelfRemovingListPreference {
             Settings.Secure.getIntForUser(
                 getContext().getContentResolver(),
                 CLOCK_SECONDS,
-                0 /* Showing seconds is disabled by default */,
+                context.resources.getInteger(R.integer.config_default_clock_seconds),
                 UserHandle.USER_CURRENT,
             ) != 0
         mClockEnabled = !mHideList.contains(mClock)

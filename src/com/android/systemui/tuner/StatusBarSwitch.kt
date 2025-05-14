@@ -35,7 +35,7 @@ class StatusBarSwitch : SelfRemovingSwitchPreference {
                 getContext().getContentResolver(),
                 ICON_HIDE_LIST,
                 UserHandle.USER_CURRENT,
-            ) ?: ""
+            ) ?: context.getString(R.string.config_default_icon_hide_list)
         mHideList = context.getIconHideList(blacklist)
     }
 
