@@ -24,7 +24,6 @@
         android:theme="@style/Theme.SubSettingsBase">
 
         <activity android:name=".TunerActivity"
-            android:icon="@drawable/tuner"
             android:label="@string/system_ui_tuner"
             android:description="@string/system_ui_tuner"
             android:launchMode="singleTask"
