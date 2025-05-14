@@ -6,6 +6,9 @@
 package com.android.systemui.tuner
 
 import android.content.Context
+import android.database.ContentObserver
+import android.os.Handler
+import android.os.Looper
 import android.os.UserHandle
 import android.provider.Settings
 import android.text.TextUtils
@@ -17,6 +20,17 @@ import com.android.systemui.tuner.preference.SelfRemovingSwitchPreference
 
 class StatusBarSwitch : SelfRemovingSwitchPreference {
 
+    private var mEnabled = false
+    private val settingsObserver: SettingsObserver
+
+    private class SettingsObserver(handler: Handler, val onChangeCallback: () -> Unit) :
+        ContentObserver(handler) {
+        override fun onChange(selfChange: Boolean) {
+            super.onChange(selfChange)
+            onChangeCallback.invoke()
+        }
+    }
+
     constructor(
         context: Context,
         attrs: AttributeSet?,
@@ -27,9 +41,15 @@ class StatusBarSwitch : SelfRemovingSwitchPreference {
 
     constructor(context: Context) : super(context, null)
 
-    private val mHideList: ArraySet<String>
+    private lateinit var mHideList: ArraySet<String>
 
     init {
+        updateBlackList()
+
+        settingsObserver = SettingsObserver(Handler(Looper.getMainLooper())) { refreshPreference() }
+    }
+
+    private fun updateBlackList() {
         val blacklist =
             Settings.Secure.getStringForUser(
                 getContext().getContentResolver(),
@@ -37,6 +57,26 @@ class StatusBarSwitch : SelfRemovingSwitchPreference {
                 UserHandle.USER_CURRENT,
             ) ?: context.getString(R.string.config_default_icon_hide_list)
         mHideList = context.getIconHideList(blacklist)
+        mEnabled = !mHideList.contains(getKey())
+    }
+
+    private fun refreshPreference() {
+        updateBlackList()
+        setChecked(mEnabled)
+    }
+
+    override open fun onAttached() {
+        super.onAttached()
+        context.contentResolver.registerContentObserver(
+            Settings.Secure.getUriFor(ICON_HIDE_LIST),
+            false,
+            settingsObserver,
+        )
+    }
+
+    override open fun onDetached() {
+        super.onDetached()
+        context.contentResolver.unregisterContentObserver(settingsObserver)
     }
 
     override open fun isPersisted(): Boolean = true

@@ -17,6 +17,7 @@ import androidx.preference.SwitchPreferenceCompat
  */
 abstract class SelfRemovingSwitchPreference : SwitchPreferenceCompat {
     private val mConstraints: ConstraintsHelper
+    protected var defValue = false
 
     constructor(
         context: Context,
@@ -65,7 +66,7 @@ abstract class SelfRemovingSwitchPreference : SwitchPreferenceCompat {
     ) {
         val checked: Boolean
         if (!restorePersistedValue || !isPersisted()) {
-            val defValue = if (defaultValue == null) false else defaultValue as Boolean
+            defValue = if (defaultValue == null) false else defaultValue as Boolean
             checked = getBoolean(getKey(), defValue)
             if (shouldPersist()) {
                 persistBoolean(checked)
