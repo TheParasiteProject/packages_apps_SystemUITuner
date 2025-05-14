@@ -9,6 +9,8 @@ package com.android.systemui.tuner
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
+import android.os.UserHandle
+import android.provider.Settings
 import android.text.TextUtils
 import androidx.collection.ArraySet
 import androidx.collection.arraySetOf
@@ -69,4 +71,31 @@ fun Context.getIconHideList(hideListStr: String?): ArraySet<String> {
         }
     }
     return ret
+}
+
+fun Context.setList(hideList: String) {
+    Settings.Secure.putStringForUser(
+        this.getContentResolver(),
+        this.getString(R.string.key_icon_hide_list),
+        hideList,
+        UserHandle.USER_CURRENT,
+    )
+}
+
+fun Context.setBooleanSecure(key: String, value: Boolean) {
+    Settings.Secure.putIntForUser(
+        this.getContentResolver(),
+        key,
+        if (value) 1 else 0,
+        UserHandle.USER_CURRENT,
+    )
+}
+
+fun Context.setBooleanSystem(key: String, value: Boolean) {
+    Settings.System.putIntForUser(
+        this.getContentResolver(),
+        key,
+        if (value) 1 else 0,
+        UserHandle.USER_CURRENT,
+    )
 }

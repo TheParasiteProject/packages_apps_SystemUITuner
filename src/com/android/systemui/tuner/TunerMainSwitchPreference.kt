@@ -44,14 +44,14 @@ class TunerMainSwitchPreference : MainSwitchPreference {
             prefs.setEnabled(context, value)
 
             if (value) {
-                setList(
+                context.setList(
                     prefs.getString(
                         context.getString(R.string.key_icon_hide_list),
                         context.getString(R.string.config_default_icon_hide_list),
                     ) ?: context.getString(R.string.config_default_icon_hide_list)
                 )
 
-                setBooleanSecure(
+                context.setBooleanSecure(
                     context.getString(R.string.key_clock_seconds),
                     prefs.getBoolean(
                         context.getString(R.string.key_clock_seconds),
@@ -59,7 +59,7 @@ class TunerMainSwitchPreference : MainSwitchPreference {
                     ),
                 )
 
-                setBooleanSystem(
+                context.setBooleanSystem(
                     context.getString(R.string.key_show_battery_percent),
                     prefs.getBoolean(
                         context.getString(R.string.key_show_battery_percent),
@@ -69,7 +69,7 @@ class TunerMainSwitchPreference : MainSwitchPreference {
                     ),
                 )
 
-                setBooleanSecure(
+                context.setBooleanSecure(
                     context.getString(R.string.key_low_priority),
                     prefs.getBoolean(
                         context.getString(R.string.key_low_priority),
@@ -77,7 +77,7 @@ class TunerMainSwitchPreference : MainSwitchPreference {
                     ),
                 )
 
-                setBooleanSystem(
+                context.setBooleanSystem(
                     context.getString(R.string.key_data_disabled_icon),
                     prefs.getBoolean(
                         context.getString(R.string.key_data_disabled_icon),
@@ -85,7 +85,7 @@ class TunerMainSwitchPreference : MainSwitchPreference {
                     ),
                 )
 
-                setBooleanSystem(
+                context.setBooleanSystem(
                     context.getString(R.string.key_show_fourg_icon),
                     prefs.getBoolean(
                         context.getString(R.string.key_show_fourg_icon),
@@ -93,7 +93,7 @@ class TunerMainSwitchPreference : MainSwitchPreference {
                     ),
                 )
 
-                setBooleanSystem(
+                context.setBooleanSystem(
                     context.getString(R.string.key_carrier_on_lockscreen),
                     prefs.getBoolean(
                         context.getString(R.string.key_carrier_on_lockscreen),
@@ -206,34 +206,34 @@ class TunerMainSwitchPreference : MainSwitchPreference {
                 )
                 .apply()
 
-            setList(context.getString(R.string.config_default_icon_hide_list))
+            context.setList(context.getString(R.string.config_default_icon_hide_list))
 
-            setBooleanSecure(
+            context.setBooleanSecure(
                 context.getString(R.string.key_clock_seconds),
                 context.resources.getInteger(R.integer.config_default_clock_seconds) != 0,
             )
 
-            setBooleanSystem(
+            context.setBooleanSystem(
                 context.getString(R.string.key_show_battery_percent),
                 context.resources.getInteger(R.integer.config_default_show_battery_percent) != 0,
             )
 
-            setBooleanSecure(
+            context.setBooleanSecure(
                 context.getString(R.string.key_low_priority),
                 context.resources.getBoolean(R.bool.config_default_low_priority),
             )
 
-            setBooleanSystem(
+            context.setBooleanSystem(
                 context.getString(R.string.key_data_disabled_icon),
                 context.resources.getBoolean(R.bool.config_default_data_disabled_icon),
             )
 
-            setBooleanSystem(
+            context.setBooleanSystem(
                 context.getString(R.string.key_show_fourg_icon),
                 context.resources.getBoolean(R.bool.config_default_show_fourg_icon),
             )
 
-            setBooleanSystem(
+            context.setBooleanSystem(
                 context.getString(R.string.key_carrier_on_lockscreen),
                 context.resources.getBoolean(R.bool.config_default_carrier_on_lockscreen),
             )
@@ -241,33 +241,6 @@ class TunerMainSwitchPreference : MainSwitchPreference {
 
         override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
             return prefs.getEnabled(context)
-        }
-
-        private fun setList(hideList: String) {
-            Settings.Secure.putStringForUser(
-                context.getContentResolver(),
-                context.getString(R.string.key_icon_hide_list),
-                hideList,
-                UserHandle.USER_CURRENT,
-            )
-        }
-
-        private fun setBooleanSecure(key: String, value: Boolean) {
-            Settings.Secure.putIntForUser(
-                getContext().getContentResolver(),
-                key,
-                if (value) 1 else 0,
-                UserHandle.USER_CURRENT,
-            )
-        }
-
-        private fun setBooleanSystem(key: String, value: Boolean) {
-            Settings.System.putIntForUser(
-                getContext().getContentResolver(),
-                key,
-                if (value) 1 else 0,
-                UserHandle.USER_CURRENT,
-            )
         }
     }
 }

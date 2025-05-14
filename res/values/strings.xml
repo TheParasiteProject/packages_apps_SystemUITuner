@@ -22,6 +22,13 @@
 
     <string name="settings_enabled_title">Use System UI Tuner</string>
 
+    <!-- Menu -->
+    <string name="menu_restore">Reset to default</string>
+    <string name="reset_tuner_settings_confirm_title">Reset tuner settings?</string>
+    <string name="reset_tuner_settings_desc">This will reset all tuner settings</string>
+    <string name="reset">Reset</string>
+    <string name="cancel">Cancel</string>
+
     <!-- Entry points in Settings -->
     <string name="settings_entry_title">@string/system_ui_tuner</string>
     <string name="settings_search_keywords">system ui tuner, tuner, status bar, icons</string>
