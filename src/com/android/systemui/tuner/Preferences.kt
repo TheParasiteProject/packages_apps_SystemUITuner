@@ -32,6 +32,10 @@ fun SharedPreferences.getEnabled(context: Context): Boolean {
     )
 }
 
+fun SharedPreferences.setEnabled(context: Context, value: Boolean) {
+    edit().putBoolean(context.getString(R.string.pref_key_enabled), value).apply()
+}
+
 fun Context.getSystemUiResources(): Resources? {
     val pm = this.packageManager
     try {
