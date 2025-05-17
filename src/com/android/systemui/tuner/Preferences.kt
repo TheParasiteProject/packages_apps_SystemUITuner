@@ -18,10 +18,6 @@ import androidx.collection.arraySetOf
 const val PREFS_NAME = "systemui_tuner_preferences"
 const val PACKAGE_SYSTEMUI = "com.android.systemui"
 
-const val ICON_HIDE_LIST = "icon_blacklist"
-const val CLOCK_SECONDS = "clock_seconds"
-const val LOW_PRIORITY = "low_priority"
-
 fun Context.getDePrefs(): SharedPreferences {
     return createDeviceProtectedStorageContext()
         .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)

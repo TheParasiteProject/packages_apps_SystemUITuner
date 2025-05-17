@@ -26,6 +26,7 @@ class BatteryPreference : SelfRemovingListPreference {
     private var mHasPercentage = false
     private lateinit var mHideList: ArraySet<String>
     private val settingsObserver: SettingsObserver
+    private val ICON_HIDE_LIST: String
 
     private class SettingsObserver(handler: Handler, val onChangeCallback: () -> Unit) :
         ContentObserver(handler) {
@@ -46,6 +47,8 @@ class BatteryPreference : SelfRemovingListPreference {
     constructor(context: Context) : super(context, null)
 
     init {
+        ICON_HIDE_LIST = context.getString(R.string.key_icon_hide_list)
+
         mBattery = context.getString(com.android.internal.R.string.status_bar_battery)
         setEntryValues(arrayOf<CharSequence>(PERCENT, DEFAULT, DISABLED))
         refreshPreference()

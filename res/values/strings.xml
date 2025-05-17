@@ -14,7 +14,6 @@
     <string name="key_clock_seconds" translatable="false">clock_seconds</string>
     <string name="key_clock_style" translatable="false">clock</string>
     <string name="key_battery_style" translatable="false">battery</string>
-    <string name="key_show_battery_percent" translatable="false">show_battery_percent</string>
     <string name="key_low_priority" translatable="false">low_priority</string>
     <string name="key_data_disabled_icon" translatable="false">data_disabled_icon</string>
     <string name="key_show_fourg_icon" translatable="false">show_fourg_icon</string>
