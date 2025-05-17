@@ -9,9 +9,7 @@ import android.content.Context
 import android.database.ContentObserver
 import android.os.Handler
 import android.os.Looper
-import android.os.UserHandle
 import android.provider.Settings
-import android.text.TextUtils
 import android.util.AttributeSet
 import androidx.collection.ArraySet
 import com.android.systemui.tuner.preference.SelfRemovingListPreference
@@ -57,28 +55,16 @@ class ClockPreference : SelfRemovingListPreference {
     }
 
     private fun updateBlackList() {
-        val blacklist =
-            Settings.Secure.getStringForUser(
-                getContext().getContentResolver(),
-                ICON_HIDE_LIST,
-                UserHandle.USER_CURRENT,
-            ) ?: context.getString(R.string.config_default_icon_hide_list)
-        mHideList = context.getIconHideList(blacklist)
+        mHideList = context.getIconHideList(context.getList())
         mClockEnabled = !mHideList.contains(mClock)
     }
 
     private fun updateHasSeconds() {
         mHasSeconds =
-            Settings.Secure.getIntForUser(
-                getContext().getContentResolver(),
+            context.getBooleanSecure(
                 CLOCK_SECONDS,
-                if (context.resources.getBoolean(R.bool.config_default_clock_seconds)) {
-                    1
-                } else {
-                    0
-                },
-                UserHandle.USER_CURRENT,
-            ) != 0
+                context.resources.getBoolean(R.bool.config_default_clock_seconds),
+            )
     }
 
     private fun refreshPreference() {
@@ -112,49 +98,34 @@ class ClockPreference : SelfRemovingListPreference {
         when (value) {
             SECONDS -> {
                 if (!mHasSeconds) {
-                    Settings.Secure.putIntForUser(
-                        getContext().getContentResolver(),
-                        CLOCK_SECONDS,
-                        1,
-                        UserHandle.USER_CURRENT,
-                    )
+                    context.setBooleanSecure(CLOCK_SECONDS, true)
                     mHasSeconds = true
                 }
                 if (mHideList.contains(mClock)) {
                     mHideList.remove(mClock)
-                    setList(mHideList)
+                    context.setList(mHideList)
                     mClockEnabled = true
                 }
             }
             DEFAULT -> {
                 if (mHasSeconds) {
-                    Settings.Secure.putIntForUser(
-                        getContext().getContentResolver(),
-                        CLOCK_SECONDS,
-                        0,
-                        UserHandle.USER_CURRENT,
-                    )
+                    context.setBooleanSecure(CLOCK_SECONDS, false)
                     mHasSeconds = false
                 }
                 if (mHideList.contains(mClock)) {
                     mHideList.remove(mClock)
-                    setList(mHideList)
+                    context.setList(mHideList)
                     mClockEnabled = true
                 }
             }
             DISABLED -> {
                 if (mHasSeconds) {
-                    Settings.Secure.putIntForUser(
-                        getContext().getContentResolver(),
-                        CLOCK_SECONDS,
-                        0,
-                        UserHandle.USER_CURRENT,
-                    )
+                    context.setBooleanSecure(CLOCK_SECONDS, false)
                     mHasSeconds = false
                 }
                 if (!mHideList.contains(mClock)) {
                     mHideList.add(mClock)
-                    setList(mHideList)
+                    context.setList(mHideList)
                     mClockEnabled = false
                 }
             }
@@ -171,15 +142,6 @@ class ClockPreference : SelfRemovingListPreference {
 
     override open fun getString(key: String, defaultValue: String?): String {
         return getStringInternal()
-    }
-
-    private fun setList(hideList: ArraySet<String>) {
-        Settings.Secure.putStringForUser(
-            getContext().getContentResolver(),
-            ICON_HIDE_LIST,
-            TextUtils.join(",", hideList),
-            UserHandle.USER_CURRENT,
-        )
     }
 
     companion object {
