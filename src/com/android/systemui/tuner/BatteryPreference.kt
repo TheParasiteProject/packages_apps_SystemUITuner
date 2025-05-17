@@ -9,10 +9,8 @@ import android.content.Context
 import android.database.ContentObserver
 import android.os.Handler
 import android.os.Looper
-import android.os.UserHandle
 import android.provider.Settings
 import android.provider.Settings.System.SHOW_BATTERY_PERCENT
-import android.text.TextUtils
 import android.util.AttributeSet
 import androidx.collection.ArraySet
 import com.android.internal.logging.MetricsLogger
@@ -57,24 +55,16 @@ class BatteryPreference : SelfRemovingListPreference {
     }
 
     private fun updateBlackList() {
-        val blacklist =
-            Settings.Secure.getStringForUser(
-                getContext().getContentResolver(),
-                ICON_HIDE_LIST,
-                UserHandle.USER_CURRENT,
-            ) ?: context.getString(R.string.config_default_icon_hide_list)
-        mHideList = context.getIconHideList(blacklist)
+        mHideList = context.getIconHideList(context.getList())
         mBatteryEnabled = !mHideList.contains(mBattery)
     }
 
     private fun updateHasPercentage() {
         mHasPercentage =
-            Settings.System.getIntForUser(
-                getContext().getContentResolver(),
+            context.getBooleanSystem(
                 SHOW_BATTERY_PERCENT,
-                0,
-                UserHandle.USER_CURRENT,
-            ) != 0
+                context.resources.getBoolean(R.bool.config_default_show_battery_percent),
+            )
     }
 
     private fun refreshPreference() {
@@ -108,53 +98,38 @@ class BatteryPreference : SelfRemovingListPreference {
         when (value) {
             PERCENT -> {
                 if (!mHasPercentage) {
-                    Settings.System.putIntForUser(
-                        getContext().getContentResolver(),
-                        SHOW_BATTERY_PERCENT,
-                        1,
-                        UserHandle.USER_CURRENT,
-                    )
+                    context.setBooleanSystem(SHOW_BATTERY_PERCENT, true)
                     mHasPercentage = true
                 }
                 if (mHideList.contains(mBattery)) {
                     mHideList.remove(mBattery)
-                    setList(mHideList)
+                    context.setList(mHideList)
                     mBatteryEnabled = true
-                    MetricsLogger.action(getContext(), MetricsEvent.TUNER_BATTERY_PERCENTAGE, true)
+                    MetricsLogger.action(context, MetricsEvent.TUNER_BATTERY_PERCENTAGE, true)
                 }
             }
             DEFAULT -> {
                 if (mHasPercentage) {
-                    Settings.System.putIntForUser(
-                        getContext().getContentResolver(),
-                        SHOW_BATTERY_PERCENT,
-                        0,
-                        UserHandle.USER_CURRENT,
-                    )
+                    context.setBooleanSystem(SHOW_BATTERY_PERCENT, false)
                     mHasPercentage = false
                 }
                 if (mHideList.contains(mBattery)) {
                     mHideList.remove(mBattery)
-                    setList(mHideList)
+                    context.setList(mHideList)
                     mBatteryEnabled = true
-                    MetricsLogger.action(getContext(), MetricsEvent.TUNER_BATTERY_PERCENTAGE, false)
+                    MetricsLogger.action(context, MetricsEvent.TUNER_BATTERY_PERCENTAGE, false)
                 }
             }
             DISABLED -> {
                 if (mHasPercentage) {
-                    Settings.System.putIntForUser(
-                        getContext().getContentResolver(),
-                        SHOW_BATTERY_PERCENT,
-                        0,
-                        UserHandle.USER_CURRENT,
-                    )
+                    context.setBooleanSystem(SHOW_BATTERY_PERCENT, false)
                     mHasPercentage = false
                 }
                 if (!mHideList.contains(mBattery)) {
                     mHideList.add(mBattery)
-                    setList(mHideList)
+                    context.setList(mHideList)
                     mBatteryEnabled = false
-                    MetricsLogger.action(getContext(), MetricsEvent.TUNER_BATTERY_PERCENTAGE, false)
+                    MetricsLogger.action(context, MetricsEvent.TUNER_BATTERY_PERCENTAGE, false)
                 }
             }
         }
@@ -170,15 +145,6 @@ class BatteryPreference : SelfRemovingListPreference {
 
     override open fun getString(key: String, defaultValue: String?): String {
         return getStringInternal()
-    }
-
-    private fun setList(hideList: ArraySet<String>) {
-        Settings.Secure.putStringForUser(
-            getContext().getContentResolver(),
-            ICON_HIDE_LIST,
-            TextUtils.join(",", hideList),
-            UserHandle.USER_CURRENT,
-        )
     }
 
     companion object {

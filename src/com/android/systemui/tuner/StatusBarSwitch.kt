@@ -53,13 +53,7 @@ class StatusBarSwitch : SelfRemovingSwitchPreference {
     }
 
     private fun updateBlackList() {
-        val blacklist =
-            Settings.Secure.getStringForUser(
-                getContext().getContentResolver(),
-                ICON_HIDE_LIST,
-                UserHandle.USER_CURRENT,
-            ) ?: context.getString(R.string.config_default_icon_hide_list)
-        mHideList = context.getIconHideList(blacklist)
+        mHideList = context.getIconHideList(context.getList())
         mEnabled = !mHideList.contains(getKey())
     }
 
@@ -90,26 +84,17 @@ class StatusBarSwitch : SelfRemovingSwitchPreference {
             if (!mHideList.contains(key)) {
                 MetricsLogger.action(getContext(), MetricsEvent.TUNER_STATUS_BAR_DISABLE, key)
                 mHideList.add(key)
-                setList(mHideList)
+                context.setList(mHideList)
             }
         } else {
             if (mHideList.remove(key)) {
                 MetricsLogger.action(getContext(), MetricsEvent.TUNER_STATUS_BAR_ENABLE, key)
-                setList(mHideList)
+                context.setList(mHideList)
             }
         }
     }
 
     protected override open fun getBoolean(key: String, defaultValue: Boolean): Boolean {
         return !mHideList.contains(key)
-    }
-
-    private fun setList(hideList: ArraySet<String>) {
-        Settings.Secure.putStringForUser(
-            getContext().getContentResolver(),
-            ICON_HIDE_LIST,
-            TextUtils.join(",", hideList),
-            UserHandle.USER_CURRENT,
-        )
     }
 }

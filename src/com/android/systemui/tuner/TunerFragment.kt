@@ -34,49 +34,13 @@ class TunerFragment :
                 AlertDialog.Builder(mContext)
                     .setTitle(mContext.getString(R.string.reset_tuner_settings_confirm_title))
                     .setMessage(mContext.getString(R.string.reset_tuner_settings_desc))
-                    .setPositiveButton(R.string.reset, { dialog, which -> reset() })
+                    .setPositiveButton(R.string.reset, { dialog, which -> context.reset(true) })
                     .setNegativeButton(R.string.cancel, null)
                     .show()
                 return true
             }
             return false
         }
-    }
-
-    private fun reset() {
-        mContext.getDePrefs().edit().clear().apply()
-
-        mContext.setList(mContext.getString(R.string.config_default_icon_hide_list))
-
-        mContext.setBooleanSecure(
-            mContext.getString(R.string.key_clock_seconds),
-            mContext.resources.getBoolean(R.bool.config_default_clock_seconds),
-        )
-
-        mContext.setBooleanSystem(
-            mContext.getString(R.string.key_show_battery_percent),
-            mContext.resources.getBoolean(R.bool.config_default_show_battery_percent),
-        )
-
-        mContext.setBooleanSecure(
-            mContext.getString(R.string.key_low_priority),
-            mContext.resources.getBoolean(R.bool.config_default_low_priority),
-        )
-
-        mContext.setBooleanSystem(
-            mContext.getString(R.string.key_data_disabled_icon),
-            mContext.resources.getBoolean(R.bool.config_default_data_disabled_icon),
-        )
-
-        mContext.setBooleanSystem(
-            mContext.getString(R.string.key_show_fourg_icon),
-            mContext.resources.getBoolean(R.bool.config_default_show_fourg_icon),
-        )
-
-        mContext.setBooleanSystem(
-            mContext.getString(R.string.key_carrier_on_lockscreen),
-            mContext.resources.getBoolean(R.bool.config_default_carrier_on_lockscreen),
-        )
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
