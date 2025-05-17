@@ -50,12 +50,12 @@ class TunerFragment :
 
         mContext.setBooleanSecure(
             mContext.getString(R.string.key_clock_seconds),
-            mContext.resources.getInteger(R.integer.config_default_clock_seconds) != 0,
+            mContext.resources.getBoolean(R.bool.config_default_clock_seconds),
         )
 
         mContext.setBooleanSystem(
             mContext.getString(R.string.key_show_battery_percent),
-            mContext.resources.getInteger(R.integer.config_default_show_battery_percent) != 0,
+            mContext.resources.getBoolean(R.bool.config_default_show_battery_percent),
         )
 
         mContext.setBooleanSecure(

@@ -4,14 +4,19 @@
   SPDX-License-Identifier: Apache-2.0
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <bool name="config_default_enabled" translatable="false">false</bool>
+    <bool name="config_default_enabled">false</bool>
+
     <string name="config_default_icon_hide_list" translatable="false">rotate,headset</string>
-    <integer name="config_default_clock_seconds" translatable="false">0</integer>
-    <integer name="config_default_clock_style" translatable="false">1</integer>
-    <integer name="config_default_show_battery_percent" translatable="false">0</integer>
-    <integer name="config_default_battery_style" translatable="false">1</integer>
-    <bool name="config_default_low_priority" translatable="false">false</bool>
-    <bool name="config_default_data_disabled_icon" translatable="false">true</bool>
-    <bool name="config_default_show_fourg_icon" translatable="false">false</bool>
-    <bool name="config_default_carrier_on_lockscreen" translatable="false">true</bool>
+
+    <bool name="config_default_clock_seconds">false</bool>
+    <integer name="config_default_clock_style">1</integer>
+
+    <bool name="config_default_show_battery_percent">false</bool>
+    <integer name="config_default_battery_style">1</integer>
+
+    <bool name="config_default_low_priority">false</bool>
+
+    <bool name="config_default_data_disabled_icon">true</bool>
+    <bool name="config_default_show_fourg_icon">false</bool>
+    <bool name="config_default_carrier_on_lockscreen">true</bool>
 </resources>

@@ -61,7 +61,7 @@ class TunerMainSwitchPreference : MainSwitchPreference {
                     CLOCK_SECONDS,
                     prefs.getBoolean(
                         CLOCK_SECONDS,
-                        context.resources.getInteger(R.integer.config_default_clock_seconds) != 0,
+                        context.resources.getBoolean(R.bool.config_default_clock_seconds),
                     ),
                 )
 
@@ -69,9 +69,7 @@ class TunerMainSwitchPreference : MainSwitchPreference {
                     SHOW_BATTERY_PERCENT,
                     prefs.getBoolean(
                         SHOW_BATTERY_PERCENT,
-                        context.resources.getInteger(
-                            R.integer.config_default_show_battery_percent
-                        ) != 0,
+                        context.resources.getBoolean(R.bool.config_default_show_battery_percent),
                     ),
                 )
 
@@ -120,7 +118,11 @@ class TunerMainSwitchPreference : MainSwitchPreference {
                 Settings.Secure.getIntForUser(
                     context.getContentResolver(),
                     CLOCK_SECONDS,
-                    context.resources.getInteger(R.integer.config_default_clock_seconds),
+                    if (context.resources.getBoolean(R.bool.config_default_clock_seconds)) {
+                        1
+                    } else {
+                        0
+                    },
                     UserHandle.USER_CURRENT,
                 ) != 0
 
@@ -128,7 +130,11 @@ class TunerMainSwitchPreference : MainSwitchPreference {
                 Settings.System.getIntForUser(
                     context.getContentResolver(),
                     SHOW_BATTERY_PERCENT,
-                    context.resources.getInteger(R.integer.config_default_show_battery_percent),
+                    if (context.resources.getBoolean(R.bool.config_default_show_battery_percent)) {
+                        1
+                    } else {
+                        0
+                    },
                     UserHandle.USER_CURRENT,
                 ) != 0
 
@@ -204,12 +210,12 @@ class TunerMainSwitchPreference : MainSwitchPreference {
 
             context.setBooleanSecure(
                 CLOCK_SECONDS,
-                context.resources.getInteger(R.integer.config_default_clock_seconds) != 0,
+                context.resources.getBoolean(R.integer.config_default_clock_seconds),
             )
 
             context.setBooleanSystem(
                 SHOW_BATTERY_PERCENT,
-                context.resources.getInteger(R.integer.config_default_show_battery_percent) != 0,
+                context.resources.getBoolean(R.integer.config_default_show_battery_percent),
             )
 
             context.setBooleanSecure(
