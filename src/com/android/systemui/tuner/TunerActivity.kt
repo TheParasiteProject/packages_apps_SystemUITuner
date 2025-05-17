@@ -12,6 +12,19 @@ class TunerActivity : CollapsingToolbarBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        TunerService.initialize(this)
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(com.android.settingslib.collapsingtoolbar.R.id.content_frame, TunerFragment())
+            .commit()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        TunerService.destroyInstance()
+
         supportFragmentManager
             .beginTransaction()
             .replace(com.android.settingslib.collapsingtoolbar.R.id.content_frame, TunerFragment())

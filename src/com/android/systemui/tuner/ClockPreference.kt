@@ -6,32 +6,20 @@
 package com.android.systemui.tuner
 
 import android.content.Context
-import android.database.ContentObserver
-import android.os.Handler
-import android.os.Looper
-import android.provider.Settings
 import android.util.AttributeSet
 import androidx.collection.ArraySet
+import com.android.systemui.tuner.TunerService.Tunable
 import com.android.systemui.tuner.preference.SelfRemovingListPreference
 
-class ClockPreference : SelfRemovingListPreference {
+class ClockPreference : SelfRemovingListPreference, Tunable {
 
     private var mClockEnabled = false
     private var mHasSeconds = false
     private lateinit var mHideList: ArraySet<String>
     private var mHasSetValue = false
     private val mClock: String
-    private val settingsObserver: SettingsObserver
     private val ICON_HIDE_LIST: String
     private val CLOCK_SECONDS: String
-
-    private class SettingsObserver(handler: Handler, val onChangeCallback: () -> Unit) :
-        ContentObserver(handler) {
-        override fun onChange(selfChange: Boolean) {
-            super.onChange(selfChange)
-            onChangeCallback.invoke()
-        }
-    }
 
     constructor(
         context: Context,
@@ -50,8 +38,10 @@ class ClockPreference : SelfRemovingListPreference {
         mClock = context.getString(com.android.internal.R.string.status_bar_clock)
         setEntryValues(arrayOf<CharSequence>(SECONDS, DEFAULT, DISABLED))
         refreshPreference()
+    }
 
-        settingsObserver = SettingsObserver(Handler(Looper.getMainLooper())) { refreshPreference() }
+    override fun onTuningChanged(key: String, newValue: String?) {
+        refreshPreference()
     }
 
     private fun updateBlackList() {
@@ -75,21 +65,12 @@ class ClockPreference : SelfRemovingListPreference {
 
     override open fun onAttached() {
         super.onAttached()
-        context.contentResolver.registerContentObserver(
-            Settings.Secure.getUriFor(ICON_HIDE_LIST),
-            false,
-            settingsObserver,
-        )
-        context.contentResolver.registerContentObserver(
-            Settings.Secure.getUriFor(CLOCK_SECONDS),
-            false,
-            settingsObserver,
-        )
+        TunerService.get().addTunable(this, ICON_HIDE_LIST, CLOCK_SECONDS)
     }
 
     override open fun onDetached() {
         super.onDetached()
-        context.contentResolver.unregisterContentObserver(settingsObserver)
+        TunerService.get().removeTunable(this)
     }
 
     override open fun isPersisted(): Boolean = true
