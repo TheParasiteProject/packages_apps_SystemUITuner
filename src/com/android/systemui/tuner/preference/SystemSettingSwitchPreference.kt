@@ -6,14 +6,13 @@
 package com.android.systemui.tuner.preference
 
 import android.content.Context
-import android.database.ContentObserver
-import android.os.Handler
-import android.os.Looper
 import android.os.UserHandle
 import android.provider.Settings
 import android.util.AttributeSet
+import com.android.systemui.tuner.TunerService
+import com.android.systemui.tuner.TunerService.Tunable
 
-open class SystemSettingSwitchPreference : SelfRemovingSwitchPreference {
+open class SystemSettingSwitchPreference : SelfRemovingSwitchPreference, Tunable {
 
     private var mEnabled = false
 
@@ -27,18 +26,8 @@ open class SystemSettingSwitchPreference : SelfRemovingSwitchPreference {
 
     constructor(context: Context) : super(context, null)
 
-    private val settingsObserver: SettingsObserver
-
-    private class SettingsObserver(handler: Handler, val onChangeCallback: () -> Unit) :
-        ContentObserver(handler) {
-        override fun onChange(selfChange: Boolean) {
-            super.onChange(selfChange)
-            onChangeCallback.invoke()
-        }
-    }
-
-    init {
-        settingsObserver = SettingsObserver(Handler(Looper.getMainLooper())) { refreshPreference() }
+    override fun onTuningChanged(key: String, newValue: String?) {
+        refreshPreference()
     }
 
     private fun updateValue() {
@@ -52,16 +41,12 @@ open class SystemSettingSwitchPreference : SelfRemovingSwitchPreference {
 
     override open fun onAttached() {
         super.onAttached()
-        context.contentResolver.registerContentObserver(
-            Settings.System.getUriFor(getKey()),
-            false,
-            settingsObserver,
-        )
+        TunerService.get().addTunable(this, "system:${getKey()}")
     }
 
     override open fun onDetached() {
         super.onDetached()
-        context.contentResolver.unregisterContentObserver(settingsObserver)
+        TunerService.get().removeTunable(this)
     }
 
     protected override open fun isPersisted(): Boolean =

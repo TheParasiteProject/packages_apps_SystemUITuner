@@ -6,31 +6,17 @@
 package com.android.systemui.tuner
 
 import android.content.Context
-import android.database.ContentObserver
-import android.os.Handler
-import android.os.Looper
-import android.os.UserHandle
-import android.provider.Settings
-import android.text.TextUtils
 import android.util.AttributeSet
 import androidx.collection.ArraySet
 import com.android.internal.logging.MetricsLogger
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent
+import com.android.systemui.tuner.TunerService.Tunable
 import com.android.systemui.tuner.preference.SelfRemovingSwitchPreference
 
-class StatusBarSwitch : SelfRemovingSwitchPreference {
+class StatusBarSwitch : SelfRemovingSwitchPreference, Tunable {
 
     private var mEnabled = false
-    private val settingsObserver: SettingsObserver
     private val ICON_HIDE_LIST: String
-
-    private class SettingsObserver(handler: Handler, val onChangeCallback: () -> Unit) :
-        ContentObserver(handler) {
-        override fun onChange(selfChange: Boolean) {
-            super.onChange(selfChange)
-            onChangeCallback.invoke()
-        }
-    }
 
     constructor(
         context: Context,
@@ -48,8 +34,10 @@ class StatusBarSwitch : SelfRemovingSwitchPreference {
         ICON_HIDE_LIST = context.getString(R.string.key_icon_hide_list)
 
         updateBlackList()
+    }
 
-        settingsObserver = SettingsObserver(Handler(Looper.getMainLooper())) { refreshPreference() }
+    override fun onTuningChanged(key: String, newValue: String?) {
+        refreshPreference()
     }
 
     private fun updateBlackList() {
@@ -64,16 +52,12 @@ class StatusBarSwitch : SelfRemovingSwitchPreference {
 
     override open fun onAttached() {
         super.onAttached()
-        context.contentResolver.registerContentObserver(
-            Settings.Secure.getUriFor(ICON_HIDE_LIST),
-            false,
-            settingsObserver,
-        )
+        TunerService.get().addTunable(this, ICON_HIDE_LIST)
     }
 
     override open fun onDetached() {
         super.onDetached()
-        context.contentResolver.unregisterContentObserver(settingsObserver)
+        TunerService.get().removeTunable(this)
     }
 
     override open fun isPersisted(): Boolean = true
