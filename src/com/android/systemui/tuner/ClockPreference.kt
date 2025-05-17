@@ -72,7 +72,11 @@ class ClockPreference : SelfRemovingListPreference {
             Settings.Secure.getIntForUser(
                 getContext().getContentResolver(),
                 CLOCK_SECONDS,
-                context.resources.getInteger(R.integer.config_default_clock_seconds),
+                if (context.resources.getBoolean(R.bool.config_default_clock_seconds)) {
+                    1
+                } else {
+                    0
+                },
                 UserHandle.USER_CURRENT,
             ) != 0
     }
