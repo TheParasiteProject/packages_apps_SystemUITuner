@@ -24,6 +24,8 @@ class ClockPreference : SelfRemovingListPreference {
     private var mHasSetValue = false
     private val mClock: String
     private val settingsObserver: SettingsObserver
+    private val ICON_HIDE_LIST: String
+    private val CLOCK_SECONDS: String
 
     private class SettingsObserver(handler: Handler, val onChangeCallback: () -> Unit) :
         ContentObserver(handler) {
@@ -44,6 +46,9 @@ class ClockPreference : SelfRemovingListPreference {
     constructor(context: Context) : super(context, null)
 
     init {
+        ICON_HIDE_LIST = context.getString(R.string.key_icon_hide_list)
+        CLOCK_SECONDS = context.getString(R.string.key_clock_seconds)
+
         mClock = context.getString(com.android.internal.R.string.status_bar_clock)
         setEntryValues(arrayOf<CharSequence>(SECONDS, DEFAULT, DISABLED))
         refreshPreference()

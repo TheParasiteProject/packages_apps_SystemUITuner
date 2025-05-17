@@ -17,6 +17,9 @@ import com.android.settingslib.widget.MainSwitchPreference
 class TunerMainSwitchPreference : MainSwitchPreference {
 
     private val prefs: SharedPreferences
+    private val ICON_HIDE_LIST: String
+    private val CLOCK_SECONDS: String
+    private val LOW_PRIORITY: String
 
     constructor(
         context: Context,
@@ -35,6 +38,9 @@ class TunerMainSwitchPreference : MainSwitchPreference {
     }
 
     init {
+        ICON_HIDE_LIST = context.getString(R.string.key_icon_hide_list)
+        CLOCK_SECONDS = context.getString(R.string.key_clock_seconds)
+        LOW_PRIORITY = context.getString(R.string.key_low_priority)
         prefs = getContext().getDePrefs()
     }
 
@@ -46,23 +52,23 @@ class TunerMainSwitchPreference : MainSwitchPreference {
             if (value) {
                 context.setList(
                     prefs.getString(
-                        context.getString(R.string.key_icon_hide_list),
+                        ICON_HIDE_LIST,
                         context.getString(R.string.config_default_icon_hide_list),
                     ) ?: context.getString(R.string.config_default_icon_hide_list)
                 )
 
                 context.setBooleanSecure(
-                    context.getString(R.string.key_clock_seconds),
+                    CLOCK_SECONDS,
                     prefs.getBoolean(
-                        context.getString(R.string.key_clock_seconds),
+                        CLOCK_SECONDS,
                         context.resources.getInteger(R.integer.config_default_clock_seconds) != 0,
                     ),
                 )
 
                 context.setBooleanSystem(
-                    context.getString(R.string.key_show_battery_percent),
+                    SHOW_BATTERY_PERCENT,
                     prefs.getBoolean(
-                        context.getString(R.string.key_show_battery_percent),
+                        SHOW_BATTERY_PERCENT,
                         context.resources.getInteger(
                             R.integer.config_default_show_battery_percent
                         ) != 0,
@@ -70,9 +76,9 @@ class TunerMainSwitchPreference : MainSwitchPreference {
                 )
 
                 context.setBooleanSecure(
-                    context.getString(R.string.key_low_priority),
+                    LOW_PRIORITY,
                     prefs.getBoolean(
-                        context.getString(R.string.key_low_priority),
+                        LOW_PRIORITY,
                         context.resources.getBoolean(R.bool.config_default_low_priority),
                     ),
                 )
@@ -174,22 +180,10 @@ class TunerMainSwitchPreference : MainSwitchPreference {
                     UserHandle.USER_CURRENT,
                 ) != 0
 
-            prefs
-                .edit()
-                .putString(context.getString(R.string.key_icon_hide_list), blacklist)
-                .apply()
-            prefs
-                .edit()
-                .putBoolean(context.getString(R.string.key_clock_seconds), hasSeconds)
-                .apply()
-            prefs
-                .edit()
-                .putBoolean(context.getString(R.string.key_show_battery_percent), hasPercentage)
-                .apply()
-            prefs
-                .edit()
-                .putBoolean(context.getString(R.string.key_low_priority), lowPriority)
-                .apply()
+            prefs.edit().putString(ICON_HIDE_LIST, blacklist).apply()
+            prefs.edit().putBoolean(CLOCK_SECONDS, hasSeconds).apply()
+            prefs.edit().putBoolean(SHOW_BATTERY_PERCENT, hasPercentage).apply()
+            prefs.edit().putBoolean(LOW_PRIORITY, lowPriority).apply()
             prefs
                 .edit()
                 .putBoolean(context.getString(R.string.key_data_disabled_icon), dataDisabledIcon)
@@ -209,17 +203,17 @@ class TunerMainSwitchPreference : MainSwitchPreference {
             context.setList(context.getString(R.string.config_default_icon_hide_list))
 
             context.setBooleanSecure(
-                context.getString(R.string.key_clock_seconds),
+                CLOCK_SECONDS,
                 context.resources.getInteger(R.integer.config_default_clock_seconds) != 0,
             )
 
             context.setBooleanSystem(
-                context.getString(R.string.key_show_battery_percent),
+                SHOW_BATTERY_PERCENT,
                 context.resources.getInteger(R.integer.config_default_show_battery_percent) != 0,
             )
 
             context.setBooleanSecure(
-                context.getString(R.string.key_low_priority),
+                LOW_PRIORITY,
                 context.resources.getBoolean(R.bool.config_default_low_priority),
             )
 

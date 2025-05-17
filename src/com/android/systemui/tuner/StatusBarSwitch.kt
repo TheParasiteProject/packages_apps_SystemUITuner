@@ -22,6 +22,7 @@ class StatusBarSwitch : SelfRemovingSwitchPreference {
 
     private var mEnabled = false
     private val settingsObserver: SettingsObserver
+    private val ICON_HIDE_LIST: String
 
     private class SettingsObserver(handler: Handler, val onChangeCallback: () -> Unit) :
         ContentObserver(handler) {
@@ -44,6 +45,8 @@ class StatusBarSwitch : SelfRemovingSwitchPreference {
     private lateinit var mHideList: ArraySet<String>
 
     init {
+        ICON_HIDE_LIST = context.getString(R.string.key_icon_hide_list)
+
         updateBlackList()
 
         settingsObserver = SettingsObserver(Handler(Looper.getMainLooper())) { refreshPreference() }
