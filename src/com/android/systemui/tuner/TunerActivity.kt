@@ -24,10 +24,5 @@ class TunerActivity : CollapsingToolbarBaseActivity() {
         super.onDestroy()
 
         TunerService.destroyInstance()
-
-        supportFragmentManager
-            .beginTransaction()
-            .replace(com.android.settingslib.collapsingtoolbar.R.id.content_frame, TunerFragment())
-            .commit()
     }
 }
