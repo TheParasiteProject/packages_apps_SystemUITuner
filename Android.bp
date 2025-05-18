@@ -39,6 +39,7 @@ android_app {
 
     required: [
         "privapp_whitelist_com.android.systemui.tuner",
+        "hidden-api-whitelist_com.android.systemui.tuner",
     ],
 
     optimize: {
@@ -56,6 +57,14 @@ prebuilt_etc {
     name: "privapp_whitelist_com.android.systemui.tuner",
     relative_install_path: "permissions",
     src: "privapp_whitelist_com.android.systemui.tuner.xml",
+    filename_from_src: true,
+    system_ext_specific: true,
+}
+
+prebuilt_etc {
+    name: "hidden-api-whitelist_com.android.systemui.tuner",
+    relative_install_path: "sysconfig",
+    src: "hidden-api-whitelist_com.android.systemui.tuner.xml",
     filename_from_src: true,
     system_ext_specific: true,
 }
