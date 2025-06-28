@@ -34,7 +34,7 @@ class TunerFragment :
                 AlertDialog.Builder(mContext)
                     .setTitle(mContext.getString(R.string.reset_tuner_settings_confirm_title))
                     .setMessage(mContext.getString(R.string.reset_tuner_settings_desc))
-                    .setPositiveButton(R.string.reset, { dialog, which -> context.reset(true) })
+                    .setPositiveButton(R.string.reset, { dialog, which -> context?.reset(true) })
                     .setNegativeButton(R.string.cancel, null)
                     .show()
                 return true
@@ -57,12 +57,12 @@ class TunerFragment :
         prefs.registerOnSharedPreferenceChangeListener(this)
 
         mMenuProvider = TunerMenuProvider()
-        activity.addMenuProvider(mMenuProvider)
+        activity?.addMenuProvider(mMenuProvider)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        activity.removeMenuProvider(mMenuProvider)
+        activity?.removeMenuProvider(mMenuProvider)
 
         prefs.unregisterOnSharedPreferenceChangeListener(this)
     }
