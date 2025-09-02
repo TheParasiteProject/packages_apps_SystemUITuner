@@ -13,10 +13,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.core.view.MenuProvider
-import androidx.preference.PreferenceFragmentCompat
+import com.android.settingslib.widget.SettingsBasePreferenceFragment
 
 class TunerFragment :
-    PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+    SettingsBasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var prefs: SharedPreferences
     private lateinit var mContext: Context
