@@ -27,7 +27,6 @@
         <activity android:name=".TunerActivity"
             android:label="@string/system_ui_tuner"
             android:description="@string/system_ui_tuner"
-            android:launchMode="singleTask"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
