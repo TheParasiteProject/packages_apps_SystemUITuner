@@ -130,6 +130,12 @@
             android:title="@string/legacy_vpn_name"
             android:dependency="@string/pref_key_enabled" />
 
+        <com.android.systemui.tuner.StatusBarSwitch
+            android:icon="@drawable/ic_statusbar_internet_speed"
+            android:key="network_speed"
+            android:title="@string/status_bar_network_speed"
+            android:dependency="@string/pref_key_enabled" />
+
         <com.android.systemui.tuner.BatteryPreference
             android:icon="@*android:drawable/ic_battery"
             android:key="@string/key_battery_style"
