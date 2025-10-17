@@ -47,5 +47,6 @@
     <!-- Statusbar Icons -->
     <string name="status_bar_call_strength">Call strength</string>
     <string name="status_bar_roaming">Roaming indicator</string>
+    <string name="status_bar_network_speed">Internet speed</string>
 
 </resources>
