@@ -38,7 +38,6 @@ android_app {
     ],
 
     required: [
-        "privapp_whitelist_com.android.systemui.tuner",
         "hidden-api-whitelist_com.android.systemui.tuner",
     ],
 
@@ -51,14 +50,7 @@ android_app {
 
     system_ext_specific: true,
     privileged: true,
-}
-
-prebuilt_etc {
-    name: "privapp_whitelist_com.android.systemui.tuner",
-    relative_install_path: "permissions",
-    src: "privapp_whitelist_com.android.systemui.tuner.xml",
-    filename_from_src: true,
-    system_ext_specific: true,
+    privapp_allowlist: "privapp_whitelist_com.android.systemui.tuner.xml",
 }
 
 prebuilt_etc {
