@@ -1,7 +1,6 @@
 # System UI Tuner Service
 
 External System UI Tuner implementation.
-No System UI changes required.
 
 ```Makefile
 # System UI Tuner
